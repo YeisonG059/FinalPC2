@@ -1,0 +1,46 @@
+version: "3"
+services:
+  notebook:
+    build:
+      context: ./jupyter-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./jupyter-notebook:/jupyter-notebook
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+  dash:
+    build:
+      context: ./jupyter-notebook
+      dockerfile: Dockerfile.dash
+    container_name: dash_dash
+    ports:
+      - "80:8080"
+    volumes:
+      - ./jupyter-notebook:/jupyter-notebook
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: hurtos
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

@@ -1,0 +1,10 @@
+FROM python:3
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /jupyter-notebook
+
+COPY requirements.txt /jupyter-notebook
+RUN pip install -r requirements.txt
+
+COPY app.py /jupyter-notebook
+CMD python app.py

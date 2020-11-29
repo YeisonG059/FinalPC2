@@ -1,0 +1,5 @@
+dash==1.11.0
+mysql-connector
+pandas
+matplotlib
+PyMySQL
